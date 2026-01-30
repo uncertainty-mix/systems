@@ -1,108 +1,88 @@
-# POS收银系统
+# 管理系统项目
 
-## 功能特性
+本项目包含两个独立的管理系统：
 
-- 商品管理（添加、查询、修改、下架）
-- 购买功能（支持批量购买、库存管理）
-- 购物记录管理（自动记录每次购买）
-- JSON文件持久化存储
-- 用户友好的控制台界面
+## 系统介绍
 
-## JSON持久化
+### 1. 成绩管理系统 (Grade Management System)
+- **功能**：学生成绩和课程管理
+- **用户角色**：老师（管理）、学生（查询）
+- **特色功能**：Excel导出、JSON数据存储
+- **详细说明**：请查看 [grade-system-README.md](grade-system-README.md)
 
-系统使用Gson库将商品数据和购物记录持久化到JSON文件中：
+### 2. POS收银系统 (Point of Sale System)
+- **功能**：商品管理、销售记录
+- **特色功能**：库存管理、购物记录、数据持久化
+- **详细说明**：请查看 [pos-system-README.md](pos-system-README.md)
 
-### 数据文件
-- 商品数据：`goods_data.json`
-- 购物记录：`purchase_records.json`
-- 位置：项目根目录
+## 快速开始
 
-### 商品数据格式
-```json
-{
-  "goods": [
-    {
-      "id": 1,
-      "goodsName": "商品名称",
-      "goodsNum": 库存数量,
-      "goodsPrice": 价格
-    }
-  ],
-  "googsIndex": 当前商品数量,
-  "goodsTotal": 最大商品容量
-}
-```
-
-### 购物记录格式
-```json
-[
-  {
-    "recordId": "PUR1703123456789",
-    "purchaseTime": "2024-01-15T14:30:25",
-    "items": [
-      {
-        "goodsId": 1,
-        "goodsName": "苹果",
-        "quantity": 3,
-        "unitPrice": 5.50,
-        "subtotal": 16.50
-      }
-    ],
-    "totalAmount": 22.90
-  }
-]
-```
-
-## 购物记录功能
-
-### 自动记录
-- 每次完成购买后自动生成购物记录
-- 记录包含购买时间、商品详情、总金额
-- 自动分配唯一的记录ID
-
-### 查看记录
-- 查看所有购物记录
-- 查看最近10条记录
-- 详细显示每条记录的商品信息
-
-### 数据持久化
-- 购物记录自动保存到JSON文件
-- 系统启动时自动加载历史记录
-- 支持大量记录的存储和查询
-
-## 自动保存
-系统在以下操作后自动保存数据：
-- 添加商品
-- 修改商品
-- 删除商品
-- 购买商品（同时保存购物记录）
-
-## 自动加载
-系统启动时自动从JSON文件加载数据，如果文件不存在则使用空数据初始化。
-
-## 运行要求
-
-- Java 8+
-- Maven（用于依赖管理）
-- Gson 2.10.1（通过Maven自动下载）
-
-## 编译和运行
-
+### 编译打包
 ```bash
-# 编译项目
-mvn compile
-
-# 运行项目
-mvn exec:java -Dexec.mainClass="com.qcby.pos.Main"
+mvn clean package
 ```
 
-## 使用说明
+### 运行系统
+```bash
+# 运行成绩管理系统
+java -jar target/grade-system.jar
 
-1. 启动程序后，系统会自动加载已保存的商品数据和购物记录
-2. 通过菜单选择相应功能：
-   - 1-4: 商品管理功能
-   - 5: 购买商品（自动生成购物记录）
-   - 6: 查看购物记录
-   - 7: 退出系统
-3. 所有数据修改会自动保存到JSON文件
-4. 程序退出时会确保数据完整保存
+# 运行POS收银系统
+java -jar target/pos-system.jar
+```
+
+## 系统要求
+
+- Java 8 或更高版本
+- Maven 3.6 或更高版本（仅编译时需要）
+
+## 项目结构
+
+```
+项目根目录/
+├── src/
+│   ├── com/qcby/grade/     # 成绩管理系统源码
+│   └── com/qcby/pos/       # POS收银系统源码
+├── target/
+│   ├── grade-system.jar   # 成绩管理系统可执行文件
+│   └── pos-system.jar     # POS收银系统可执行文件
+├── grade-system-README.md # 成绩管理系统说明文档
+├── pos-system-README.md   # POS收银系统说明文档
+└── README.md              # 项目总体说明（本文件）
+```
+
+## 运行时文件结构
+
+运行jar包后，会在当前目录自动生成：
+
+```
+运行目录/
+├── data/                  # 数据文件目录
+│   ├── courses.json       # 课程数据
+│   ├── users.json         # 用户数据
+│   ├── grades_*.json      # 成绩数据
+│   ├── goods_data.json    # 商品数据
+│   └── purchase_records.json # 购买记录
+└── exports/               # Excel导出目录（仅成绩系统）
+    ├── 成绩查询结果_*.xlsx
+    └── 课程查询结果_*.xlsx
+```
+
+## 技术特性
+
+- **数据持久化**：JSON格式存储
+- **用户体验**：控制台交互界面
+- **数据导出**：Excel格式导出（成绩系统）
+- **密码安全**：密码输入隐藏显示
+- **自动初始化**：首次运行自动创建数据文件
+
+## 开发技术栈
+
+- **语言**：Java 8
+- **构建工具**：Maven
+- **JSON处理**：Gson
+- **Excel处理**：Apache POI
+
+## 许可证
+
+本项目仅供学习和演示使用。
