@@ -1,0 +1,23 @@
+[
+  {
+    "recordId": "PUR1769759487814",
+    "purchaseTime": "2026-01-30T15:51:27.8144975",
+    "items": [
+      {
+        "goodsId": 1,
+        "goodsName": "鼠标",
+        "quantity": 1,
+        "unitPrice": 199.00,
+        "subtotal": 199.00
+      },
+      {
+        "goodsId": 3,
+        "goodsName": "鼠标垫",
+        "quantity": 1,
+        "unitPrice": 30.00,
+        "subtotal": 30.00
+      }
+    ],
+    "totalAmount": 229.00
+  }
+]
