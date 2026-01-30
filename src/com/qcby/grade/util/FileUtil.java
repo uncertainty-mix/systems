@@ -7,7 +7,10 @@ import java.io.*;
 import java.lang.reflect.Type;
 
 public class FileUtil {
-    private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private static final Gson gson = new GsonBuilder()
+            .setPrettyPrinting()
+            .disableHtmlEscaping()
+            .create();
     private static final String DATA_DIR = "data";
 
     static {
@@ -20,7 +23,8 @@ public class FileUtil {
     public static <T> void saveJson(String filename, T data) {
         try {
             String filepath = DATA_DIR + File.separator + filename;
-            try (FileWriter writer = new FileWriter(filepath)) {
+            try (OutputStreamWriter writer = new OutputStreamWriter(
+                    new FileOutputStream(filepath), "UTF-8")) {
                 gson.toJson(data, writer);
             }
         } catch (Exception e) {
@@ -37,7 +41,8 @@ public class FileUtil {
                 return null;
             }
 
-            try (FileReader reader = new FileReader(filepath)) {
+            try (InputStreamReader reader = new InputStreamReader(
+                    new FileInputStream(filepath), "UTF-8")) {
                 return gson.fromJson(reader, type);
             }
         } catch (Exception e) {

@@ -48,6 +48,7 @@ public class PosSystem {
     private Gson createGsonWithDateTimeSupport() {
         return new GsonBuilder()
                 .setPrettyPrinting()
+                .disableHtmlEscaping()
                 .registerTypeAdapter(LocalDateTime.class, 
                     (JsonSerializer<LocalDateTime>) (src, typeOfSrc, context) -> 
                         context.serialize(src.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)))
@@ -183,7 +184,8 @@ public class PosSystem {
 
     // 保存数据到JSON文件
     private void saveToFile() {
-        try (FileWriter writer = new FileWriter(dataFilePath)) {
+        try (OutputStreamWriter writer = new OutputStreamWriter(
+                new FileOutputStream(dataFilePath), "UTF-8")) {
             PersistenceData data = new PersistenceData();
             data.goods = new ArrayList<>(allGoods.subList(0, googsIndex));
             data.googsIndex = googsIndex;
@@ -203,7 +205,8 @@ public class PosSystem {
             return;
         }
 
-        try (FileReader reader = new FileReader(dataFilePath)) {
+        try (InputStreamReader reader = new InputStreamReader(
+                new FileInputStream(dataFilePath), "UTF-8")) {
             Type dataType = new TypeToken<PersistenceData>(){}.getType();
             PersistenceData data = gson.fromJson(reader, dataType);
             
@@ -256,7 +259,8 @@ public class PosSystem {
 
     // 保存购物记录到JSON文件
     private void savePurchaseRecords() {
-        try (FileWriter writer = new FileWriter(recordsFilePath)) {
+        try (OutputStreamWriter writer = new OutputStreamWriter(
+                new FileOutputStream(recordsFilePath), "UTF-8")) {
             gson.toJson(purchaseRecords, writer);
         } catch (IOException e) {
             System.err.println("保存购物记录失败: " + e.getMessage());
@@ -271,7 +275,8 @@ public class PosSystem {
             return;
         }
 
-        try (FileReader reader = new FileReader(recordsFilePath)) {
+        try (InputStreamReader reader = new InputStreamReader(
+                new FileInputStream(recordsFilePath), "UTF-8")) {
             Type recordsType = new TypeToken<List<PurchaseRecord>>(){}.getType();
             List<PurchaseRecord> records = gson.fromJson(reader, recordsType);
             
